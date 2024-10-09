@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local", "**/tsconfig*.json"],
+  "globalPassThroughEnv": ["AWS_SECRET_KEY", "GITHUB_TOKEN"],
+  "tasks": {
+    "codegen": {
+      "cache": true,
+      "outputs": ["src/generated/**"]
+    },
+    "build": {
+      "outputs": ["dist/**"]
+    },
+    "build-force": {
+      "outputs": ["dist/**"]
+    },
+    "fix-all-files": {
+      "env": ["TIMING"]
+    },
+    "lint": {
+      "env": ["TIMING"]
+    },
+    "lint-styles": {},
+    "typecheck": {},
+    "build-storybook": {},
+    "clean": {
+      "cache": false
+    },
+    "check-dist": {
+      "dependsOn": ["build-force", "build"]
+    },
+    "check-size": {
+      "dependsOn": ["build-force", "build"]
+    }
+  }
+}

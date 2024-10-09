@@ -1,0 +1,19 @@
+{
+  "name": "openrouter-models-cron",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev --test-scheduled",
+    "start": "wrangler dev --test-scheduled",
+    "cf-typegen": "wrangler types",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@openrouter-models/db": "workspace:^"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "wrangler": "^3.78.12"
+  }
+}

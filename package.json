@@ -1,0 +1,59 @@
+{
+  "name": "openrouter-models",
+  "private": true,
+  "scripts": {
+    "check:git-pristine": "./scripts/check-git-pristine.sh",
+    "clean:global-cache": "rimraf ./.cache",
+    "clean:turbo": "turbo clean && rimraf --glob '**/.turbo' '**/turbo-*.log'",
+    "deps:check": "npx npm-check-updates@latest --configFileName .ncurc.yml --workspaces --root --mergeConfig",
+    "deps:update": "npx npm-check-updates@latest --configFileName .ncurc.yml -u --workspaces --root --mergeConfig",
+    "g:build": "turbo run build",
+    "g:changeset": "changeset",
+    "g:check-dist": "turbo run check-dist",
+    "g:clean": "yarn clean:global-cache && yarn clean:turbo && rimraf ./out && yarn workspaces foreach -A -ptv run clean",
+    "g:codegen": "turbo run codegen",
+    "g:fix-all-files": "TIMING=1 turbo run fix-all-files",
+    "g:lint": "TIMING=1 turbo run lint --color",
+    "g:lint-staged-files": "lint-staged --allow-empty",
+    "g:lint-styles": "turbo run lint-styles --color",
+    "g:release": "yarn g:build && changeset publish",
+    "g:typecheck": "turbo run typecheck",
+    "g:turbo": "turbo",
+    "install:playwright": "playwright install",
+    "install:husky": "husky",
+    "nuke:node_modules": "rimraf --glob '**/node_modules'",
+    "postinstall": "run-s install:husky g:codegen",
+    "check:install": "yarn dlx @yarnpkg/doctor ."
+  },
+  "dependencies": {
+    "cross-env": "7.0.3"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "0.5.0",
+    "@changesets/cli": "2.27.8",
+    "@commitlint/cli": "19.5.0",
+    "@commitlint/config-conventional": "19.5.0",
+    "@openrouter-models/eslint-config-bases": "workspace:^",
+    "@types/shell-quote": "1.7.5",
+    "eslint": "8.57.1",
+    "husky": "9.1.6",
+    "lint-staged": "15.2.10",
+    "npm-run-all2": "6.2.3",
+    "prettier": "3.3.3",
+    "rimraf": "6.0.1",
+    "shell-quote": "1.8.1",
+    "syncpack": "13.0.0",
+    "turbo": "2.1.2",
+    "typescript": "5.6.2"
+  },
+  "engines": {
+    "node": ">=18.17.0",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
+  "packageManager": "yarn@4.5.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

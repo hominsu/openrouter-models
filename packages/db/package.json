@@ -1,0 +1,32 @@
+{
+  "name": "@openrouter-models/db",
+  "version": "0.1.0",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "echo \"Unrequired and disabled when using tsonfig paths aliases, run 'build-force' to test a build.\"",
+    "build-force": "echo \"'build-force' not working yet for prisma.\"",
+    "clean": "rimraf ./dist ./coverage ./tsconfig.tsbuildinfo",
+    "fix-all-files": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs --fix",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs --cache --cache-location ../../.cache/eslint/db.eslintcache",
+    "codegen": "rimraf ./src/generated && prisma generate",
+    "prisma:generate": "prisma generate",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "prisma": "5.20.0",
+    "zod-prisma": "0.5.4"
+  },
+  "dependencies": {
+    "@prisma/adapter-d1": "5.20.0",
+    "@prisma/client": "5.20.0"
+  }
+}
