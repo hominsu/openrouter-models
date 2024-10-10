@@ -8,9 +8,9 @@ generator client {
 }
 
 generator zod {
-  provider                 = "zod-prisma"
-  output                   = "../src/generated/zod"
-  modelSuffix              = ""
+  provider    = "zod-prisma"
+  output      = "../src/generated/zod"
+  modelSuffix = ""
 }
 
 datasource db {
@@ -20,17 +20,17 @@ datasource db {
 }
 
 model Model {
-  id               String            @id
-  name             String
-  created          DateTime
-  description      String?
-  context_length   Int?
-  architecture     Architecture?
-  Pricing          Pricing?
-  TopProvider      TopProvider?
-  PerRequestLimits PerRequestLimits?
-  Parameters       Parameters?
-  createdAt        DateTime          @default(now())
+  id                 String            @id
+  name               String
+  created            DateTime
+  description        String?
+  context_length     Int?
+  architecture       Architecture?
+  pricing            Pricing?
+  top_provider       TopProvider?
+  per_request_limits PerRequestLimits?
+  parameters         Parameters?
+  createdAt          DateTime          @default(now())
 }
 
 model Architecture {
@@ -63,15 +63,16 @@ model TopProvider {
 
 model PerRequestLimits {
   id                Int    @id @default(autoincrement())
-  prompt_tokens     Int?
-  completion_tokens Int?
+  prompt_tokens     String?
+  completion_tokens String?
   model             Model  @relation(fields: [modelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   modelId           String @unique
 }
 
 model Parameters {
-  id                     Int                               @id @default(autoincrement())
-  supported_parameters   SupportedParametersOnParameters[]
+  id                     Int                   @id @default(autoincrement())
+  model                  String?
+  supported_parameters   SupportedParameters[]
   frequency_penalty_p10  Float?
   frequency_penalty_p50  Float?
   frequency_penalty_p90  Float?
@@ -96,20 +97,13 @@ model Parameters {
   top_p_p10              Float?
   top_p_p50              Float?
   top_p_p90              Float?
-  model                  Model                             @relation(fields: [modelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  modelId                String                            @unique
+  model_                 Model                 @relation(fields: [modelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  modelId                String                @unique
 }
 
 model SupportedParameters {
-  id         Int                               @id @default(autoincrement())
-  name       String
-  parameters SupportedParametersOnParameters[]
-}
-
-model SupportedParametersOnParameters {
-  id                    Int                  @id @default(autoincrement())
-  Parameters            Parameters?          @relation(fields: [parametersId], references: [id])
-  parametersId          Int?
-  SupportedParameters   SupportedParameters? @relation(fields: [supportedParametersId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  supportedParametersId Int?
+  id           Int         @id @default(autoincrement())
+  name         String
+  Parameters   Parameters? @relation(fields: [parametersId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  parametersId Int?        @unique
 }

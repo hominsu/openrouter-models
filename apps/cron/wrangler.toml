@@ -1,13 +1,13 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "openrouter-models-cron"
 main = "src/index.ts"
-compatibility_date = "2024-09-29"
+compatibility_date = "2024-09-25"
 
 # Cron Triggers
 # Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
 # Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
-crons = ["* * * * *"] # * * * * * = run every minute
+crons = ["0 0 1 * *"]
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
@@ -29,7 +29,6 @@ enabled = true
 # - https://developers.cloudflare.com/workers/configuration/secrets/
 [vars]
 WORKER_ENV = "production"
-OPENER_ROUTER_API_KEY = ""
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#workers-ai

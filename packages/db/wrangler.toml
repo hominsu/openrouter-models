@@ -49,8 +49,8 @@ enabled = true
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#d1-databases
 [[d1_databases]]
 binding = "DB"
-database_name = ""
-database_id = ""
+database_name="openrouter-models"
+database_id="da0b6683-4f91-4980-99e0-f0eaccf7a336"
 migrations_dir = "migrations"
 
 # Bind a dispatch namespace. Use Workers for Platforms to deploy serverless functions programmatically on behalf of your customers.

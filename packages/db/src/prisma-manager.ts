@@ -5,10 +5,10 @@
 import type { PrismaDbMain as Prisma, PrismaClientDbMain as PrismaClient } from './index'
 export type PrismaClientOptions = Prisma.PrismaClientOptions
 
-declare let global: {
+declare const globalThis: {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   __PRISMA_INSTANCES__: Record<string, PrismaClient> | undefined
-}
+} & typeof global
 
 export class PrismaManager {
   private static instances?: Record<string, PrismaClient>
@@ -33,14 +33,14 @@ export class PrismaManager {
     } else {
       // PrismaClient is attached to the `global` object in development to prevent
       // exhausting your database connection limit.
-      if (!global.__PRISMA_INSTANCES__?.[instanceKey]) {
-        global.__PRISMA_INSTANCES__ ??= {}
-        global.__PRISMA_INSTANCES__[instanceKey] = prismaClientFactory()
+      if (!globalThis.__PRISMA_INSTANCES__?.[instanceKey]) {
+        globalThis.__PRISMA_INSTANCES__ ??= {}
+        globalThis.__PRISMA_INSTANCES__[instanceKey] = prismaClientFactory()
         console.debug(
           '[PrismaFactory.createDevSafeInstance]: Dev instance created and preserved globally.'
         )
       }
-      return global.__PRISMA_INSTANCES__[instanceKey]
+      return globalThis.__PRISMA_INSTANCES__[instanceKey]
     }
   }
 }

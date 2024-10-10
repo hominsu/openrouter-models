@@ -2,9 +2,10 @@
 CREATE TABLE "Model" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
-    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created" DATETIME NOT NULL,
     "description" TEXT,
-    "context_length" INTEGER
+    "context_length" INTEGER,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
@@ -14,7 +15,7 @@ CREATE TABLE "Architecture" (
     "instruct_type" TEXT,
     "modality" TEXT,
     "modelId" TEXT NOT NULL,
-    CONSTRAINT "Architecture_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Architecture_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -25,7 +26,7 @@ CREATE TABLE "Pricing" (
     "request" TEXT,
     "image" TEXT,
     "modelId" TEXT NOT NULL,
-    CONSTRAINT "Pricing_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Pricing_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -35,21 +36,22 @@ CREATE TABLE "TopProvider" (
     "max_completion_tokens" INTEGER,
     "is_moderated" BOOLEAN,
     "modelId" TEXT NOT NULL,
-    CONSTRAINT "TopProvider_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "TopProvider_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "PerRequestLimits" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "prompt_tokens" INTEGER,
-    "completion_tokens" INTEGER,
+    "prompt_tokens" TEXT,
+    "completion_tokens" TEXT,
     "modelId" TEXT NOT NULL,
-    CONSTRAINT "PerRequestLimits_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "PerRequestLimits_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Parameters" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "model" TEXT,
     "frequency_penalty_p10" REAL,
     "frequency_penalty_p50" REAL,
     "frequency_penalty_p90" REAL,
@@ -75,22 +77,15 @@ CREATE TABLE "Parameters" (
     "top_p_p50" REAL,
     "top_p_p90" REAL,
     "modelId" TEXT NOT NULL,
-    CONSTRAINT "Parameters_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Parameters_modelId_fkey" FOREIGN KEY ("modelId") REFERENCES "Model" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "SupportedParameters" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "SupportedParametersOnParameters" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
     "parametersId" INTEGER,
-    "supportedParametersId" INTEGER,
-    CONSTRAINT "SupportedParametersOnParameters_parametersId_fkey" FOREIGN KEY ("parametersId") REFERENCES "Parameters" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "SupportedParametersOnParameters_supportedParametersId_fkey" FOREIGN KEY ("supportedParametersId") REFERENCES "SupportedParameters" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "SupportedParameters_parametersId_fkey" FOREIGN KEY ("parametersId") REFERENCES "Parameters" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -107,3 +102,6 @@ CREATE UNIQUE INDEX "PerRequestLimits_modelId_key" ON "PerRequestLimits"("modelI
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Parameters_modelId_key" ON "Parameters"("modelId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SupportedParameters_parametersId_key" ON "SupportedParameters"("parametersId");

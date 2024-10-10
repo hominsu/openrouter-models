@@ -16,7 +16,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: 'tsconfig.json',
   },
-  ignorePatterns: [...getDefaultIgnorePatterns(), 'src/generated'],
+  ignorePatterns: [...getDefaultIgnorePatterns()],
   extends: [
     '@openrouter-models/eslint-config-bases/prettier-plugin',
     '@openrouter-models/eslint-config-bases/typescript',
